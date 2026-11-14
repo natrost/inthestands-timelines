@@ -164,33 +164,76 @@
     });
   }
 
+  /* ---------- Stage: one pinned screen; events crossfade as you scroll ---------- */
+  const realDoc = document.realDocument || window.document;
+  const host = document.host || null;
+  const navSel = (host && host.getAttribute('data-nav')) || '.nav_wrapper';
+  const track = document.getElementById('timeline'), stage = document.getElementById('stage');
+  const slides = [...stage.querySelectorAll(':scope > .slide')];
+  const dateBar = document.getElementById('dateBar'), dbGap = document.getElementById('dbGap');
+  const W_DEFAULT = 1.25;
+  let starts = [], spans = [], total = 0, vh = innerHeight;
+
+  // wrap each normal slide's content so it can animate in and scale to fit
+  slides.forEach(sl => {
+    if (sl.classList.contains('moment') || sl.classList.contains('count')) return;
+    const inner = document.createElement('div'); inner.className = 'slide-inner';
+    while (sl.firstChild) inner.appendChild(sl.firstChild);
+    sl.appendChild(inner);
+  });
+
+  function layout() {
+    vh = innerHeight; starts = []; spans = []; total = 0;
+    slides.forEach(sl => { const w = parseFloat(sl.dataset.weight || W_DEFAULT); starts.push(total); spans.push(w * vh); total += w * vh; });
+    track.style.height = (total + vh) + 'px';
+    slides.forEach(fitSlide);
+  }
+  function fitSlide(sl) {
+    const inner = sl.querySelector(':scope > .slide-inner'); if (!inner) return;
+    inner.style.transform = 'none';
+    const cs = getComputedStyle(sl);
+    const avail = sl.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    const h = inner.scrollHeight, k = h > avail ? Math.max(.55, avail / h) : 1;
+    inner.style.setProperty('--fit', k.toFixed(3));
+    inner.style.transform = '';
+  }
+  stage.querySelectorAll('img').forEach(im => im.addEventListener('load', () => fitSlide(im.closest('.slide'))));
+  const trackTop = () => track.getBoundingClientRect().top + scrollY;
+  const goTo = i => scrollTo({ top: trackTop() + starts[i] + 2, behavior: reduce ? 'auto' : 'smooth' });
+
   /* in-page links (the page lives in a shadow root, so the browser won't jump to #ids on its own) */
   document.body.addEventListener('click', e => {
     const a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
     const t = document.getElementById(a.getAttribute('href').slice(1)); if (!t) return;
-    e.preventDefault(); t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    e.preventDefault();
+    const i = slides.indexOf(t);
+    if (i >= 0) goTo(i); else t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
   });
 
-  /* ---------- Year rail ---------- */
-  const marks = [...document.querySelectorAll('[data-year]')];
-  const navOl = document.querySelector('#yearNav ol');
-  const years = [...new Set(marks.map(m => m.dataset.year))];
-  const links = {};
+  /* ---------- Year rail + date menu ---------- */
+  const navOl = document.querySelector('#yearNav ol'), menu = document.getElementById('yearMenu'), dateBtn = document.getElementById('dateBtn');
+  const years = [...new Set(slides.map(m => m.dataset.year))];
+  const links = {}, mlinks = {};
   years.forEach(y => {
-    const target = marks.find(m => m.dataset.year === y);
-    const li = document.createElement('li'), a = document.createElement('a');
-    a.href = '#' + target.id; a.textContent = y;
-    a.addEventListener('click', e => { e.preventDefault(); target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); });
-    li.appendChild(a); navOl.appendChild(li); links[y] = a;
+    const i = slides.findIndex(m => m.dataset.year === y);
+    [[navOl, links], [menu, mlinks]].forEach(([list, store]) => {
+      const li = document.createElement('li'), a = document.createElement('a');
+      a.href = '#' + slides[i].id; a.textContent = y;
+      a.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); closeMenu(); goTo(i); });
+      li.appendChild(a); list.appendChild(li); store[y] = a;
+    });
   });
+  function closeMenu() { menu.hidden = true; dateBtn.setAttribute('aria-expanded', 'false'); }
+  dateBtn.addEventListener('click', () => { const open = menu.hidden; menu.hidden = !open; dateBtn.setAttribute('aria-expanded', String(open)); });
+  realDoc.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
   let activeYear = null;
 
-  /* header stamp: only the digits that change flip, like a hand-turned scoreboard */
+  /* date bar stamp: only the digits that change flip, like a hand-turned scoreboard */
   const hsMonth = document.getElementById('hsMonth'), hsYear = document.getElementById('hsYear'), hsDigits = [...hsYear.querySelectorAll('b')];
   let hsMonthFull = 'March';
   const fitMonth = () => { hsMonth.textContent = innerWidth < 420 ? hsMonthFull.slice(0, 3) + '.' : hsMonthFull; };
   function setHeaderStamp(m, y) {
-    hsMonthFull = m; fitMonth(); hsYear.setAttribute('aria-label', y);
+    hsMonthFull = m; fitMonth(); hsYear.setAttribute('aria-label', m + ' ' + y);
     y.split('').forEach((ch, i) => {
       const b = hsDigits[i]; if (b.textContent === ch) return;
       b.textContent = ch;
@@ -198,66 +241,89 @@
     });
   }
   fitMonth();
-
-  const siteNav = document.getElementById('siteNav'), menuBtn = document.getElementById('menuBtn');
-  menuBtn.addEventListener('click', () => { const open = !siteNav.classList.contains('open'); siteNav.classList.toggle('open', open); menuBtn.setAttribute('aria-expanded', String(open)); });
-
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .3 });
-  document.querySelectorAll('.slide').forEach(s => io.observe(s));
+  let gapTimer = 0;
+  function showGap(from, to) {
+    const d = Math.abs(to - from); if (!d) return;
+    dbGap.textContent = (to > from ? '+' : '−') + d + (d === 1 ? ' year' : ' years');
+    dbGap.classList.add('show'); clearTimeout(gapTimer);
+    gapTimer = setTimeout(() => dbGap.classList.remove('show'), 1800);
+  }
 
   /* ---------- Scroll loop ---------- */
-  const intro = document.getElementById('intro'), moment = document.getElementById('moment'), count = document.getElementById('count'), timeline = document.getElementById('timeline');
+  const intro = document.getElementById('intro'), moment = document.getElementById('moment'), count = document.getElementById('count');
   const phrases = [...moment.querySelectorAll('.phrase')];
   const digits = [...document.querySelectorAll('#countDigits b')], countLabel = document.getElementById('countLabel');
   const prog = el => { const r = el.getBoundingClientRect(); return clamp(-r.top / (r.height - innerHeight)); };
-  let sang = false, burst = false, lastN = -1, queued = false;
+  let sang = false, burst = false, lastN = -1, queued = false, active = -1, fadeTimer = 0;
+  const siteNav = realDoc.querySelector(navSel);
+
+  function setActive(i) {
+    if (i === active) return;
+    const prev = slides[active];
+    slides.forEach(sl => sl.classList.remove('prev'));
+    if (prev) { prev.classList.remove('on'); prev.classList.add('prev'); }
+    clearTimeout(fadeTimer);
+    fadeTimer = setTimeout(() => { slides.forEach(sl => sl.classList.remove('prev')); }, 900);
+    const sl = slides[i]; sl.classList.add('on');
+    if (prev) showGap(+prev.dataset.year, +sl.dataset.year);
+    active = i;
+    const y = sl.dataset.year;
+    document.body.dataset.tone = sl.dataset.tone || 'dark';
+    setHeaderStamp(sl.dataset.month, y);
+    if (y !== activeYear) {
+      [links, mlinks].forEach(L => { if (L[activeYear]) { L[activeYear].classList.remove('active'); L[activeYear].removeAttribute('aria-current'); } });
+      activeYear = y;
+      [links, mlinks].forEach(L => { if (L[y]) { L[y].classList.add('active'); L[y].setAttribute('aria-current', 'step'); } });
+    }
+  }
 
   function frame() {
     queued = false;
     const ir = intro.getBoundingClientRect();
     if (ir.bottom > 0) { let p = prog(intro); if (reduce) p = p > .35 ? 1 : 0; drawClouds(p); drawAerial(p); }
 
-    const mp = prog(moment), n = phrases.length;
-    phrases.forEach((el, i) => {
-      const d = Math.abs(mp - (i + .5) / n) * n;
+    // date bar sits under the site nav while it's on screen, then at the top
+    const navB = siteNav ? Math.max(0, siteNav.getBoundingClientRect().bottom) : 0;
+    dateBar.style.top = navB + 'px';
+    document.body.style.setProperty('--navb', navB + 'px');
+
+    const tr = track.getBoundingClientRect();
+    const inStage = tr.top <= 1 && tr.bottom >= vh * .5;
+    document.body.classList.toggle('nav-on', tr.top < vh * .35 && tr.bottom > vh * .5);
+    const sY = clamp(-tr.top, 0, total - 1);
+    let i = 0; while (i < starts.length - 1 && sY >= starts[i + 1]) i++;
+    setActive(i);
+    const local = clamp((sY - starts[i]) / spans[i]);
+
+    // Harry: the count runs while his slide is up
+    const mp = slides[i] === moment ? local : (slides.indexOf(moment) < i ? 1 : 0), n = phrases.length;
+    phrases.forEach((el, k) => {
+      const d = Math.abs(mp - (k + .5) / n) * n;
       el.style.opacity = clamp(1.15 - d * 1.3).toFixed(3);
       el.style.transform = reduce ? '' : `scale(${(.82 + .28 * clamp(1 - d)).toFixed(3)})`;
     });
-    if (mp > .92 && !sang) { sang = true; stretch(); }
+    if (inStage && slides[i] === moment && mp > .92 && !sang) { sang = true; stretch(); }
     if (mp < .4) sang = false;
 
-    const cp = prog(count), num = Math.round(108 * (1 - clamp(cp / .7)));
+    // 2016: countdown from 108 to 0 while its slide is up
+    const ci = slides.indexOf(count);
+    const cp = i === ci ? local : (i > ci ? 1 : 0), num = Math.round(108 * (1 - clamp(cp / .7)));
     if (num !== lastN) {
       lastN = num;
-      String(num).padStart(3, ' ').split('').forEach((ch, i) => { digits[i].textContent = ch === ' ' ? ' ' : ch; });
+      String(num).padStart(3, ' ').split('').forEach((ch, k) => { digits[k].textContent = ch === ' ' ? ' ' : ch; });
       const won = num === 0;
       count.classList.toggle('won', won);
       countLabel.textContent = won ? 'Cubs win! First World Series title since 1908.' : 'Years since the Cubs last won the World Series';
-      if (won && !burst) { burst = true; confetti(); chord(); }
+      if (won && !burst && i === ci) { burst = true; confetti(); chord(); }
       if (!won && num > 5) burst = false;
-    }
-
-    const tl = timeline.getBoundingClientRect();
-    document.body.classList.toggle('nav-on', tl.top < innerHeight * .5 && tl.bottom > innerHeight * .5);
-    let cur = null; const line = innerHeight * .45;
-    for (const m of marks) if (m.getBoundingClientRect().top < line) cur = m;
-    const y = cur ? cur.dataset.year : null;
-    document.body.dataset.tone = cur ? cur.dataset.tone : 'dark';
-    if (y !== activeYear) {
-      if (activeYear && links[activeYear]) links[activeYear].classList.remove('active');
-      activeYear = y;
-      if (cur) setHeaderStamp(cur.dataset.month, y);
-      if (y && links[y]) {
-        const a = links[y]; a.classList.add('active'); a.setAttribute('aria-current', 'step');
-        const ol = navOl; if (ol.scrollWidth > ol.clientWidth) ol.scrollTo({ left: a.offsetLeft - ol.clientWidth / 2 + a.clientWidth / 2, behavior: reduce ? 'auto' : 'smooth' });
-      }
-      Object.entries(links).forEach(([k, a]) => { if (k !== y) a.removeAttribute('aria-current'); });
     }
   }
   const req = () => { if (!queued) { queued = true; requestAnimationFrame(frame); } };
   addEventListener('scroll', req, { passive: true });
-  addEventListener('resize', () => { sizeCanvas(cv); fitMonth(); req(); });
-  sizeCanvas(cv); frame();
+  addEventListener('resize', () => { sizeCanvas(cv); fitMonth(); layout(); req(); });
+  if (realDoc.fonts && realDoc.fonts.ready) realDoc.fonts.ready.then(() => { layout(); req(); });
+  addEventListener('load', () => { layout(); req(); });
+  sizeCanvas(cv); layout(); frame();
 
   /* ---------- First game ---------- */
   const NOW = new Date().getFullYear(), SPAN = NOW - 1914;

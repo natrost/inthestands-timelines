@@ -42,7 +42,9 @@ bundle = f"""/* In the Stands: History of Wrigley Field. Built from src/ by buil
       querySelector: function (s) {{ return root.querySelector(s); }},
       querySelectorAll: function (s) {{ return root.querySelectorAll(s); }},
       createElement: function (t) {{ return document.createElement(t); }},
-      body: root.querySelector('.wh-root')
+      body: root.querySelector('.wh-root'),
+      host: host,
+      realDocument: document
     }};
     (function (document) {{
 {app}

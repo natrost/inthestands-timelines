@@ -1,29 +1,18 @@
 <div class="wh-root" data-tone="dark">
 
-<header class="site-header">
-  <div class="brand-wrap">
-    <a class="brand" href="https://www.inthestands.co/">In the <span>Stands</span></a>
-    <a class="back-link" href="https://www.inthestands.co/overview/chicago-cubs">‹ Cubs at Wrigley Field</a>
+<div class="datebar" id="dateBar">
+  <a class="db-back" href="https://www.inthestands.co/overview/chicago-cubs">‹ Chicago Cubs · Wrigley Field</a>
+  <div class="db-center">
+    <button class="db-date" id="dateBtn" type="button" aria-expanded="false" aria-controls="yearMenu" aria-label="Jump to a year">
+      <span class="hs-month" id="hsMonth">March</span>
+      <span class="hs-year" id="hsYear" aria-label="March 1914"><b>1</b><b>9</b><b>1</b><b>4</b></span>
+      <span class="db-caret" aria-hidden="true">▾</span>
+    </button>
+    <span class="db-gap" id="dbGap" aria-hidden="true"></span>
+    <ol class="year-menu" id="yearMenu" hidden></ol>
   </div>
-  <div class="hdr-stamp" id="hdrStamp" aria-label="Current point in the timeline">
-    <span class="hs-month" id="hsMonth">March</span>
-    <span class="hs-year" id="hsYear" aria-label="1914"><b>1</b><b>9</b><b>1</b><b>4</b></span>
-  </div>
-  <nav class="site-nav" id="siteNav" aria-label="Main">
-    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="siteLinks">Menu</button>
-    <div class="links" id="siteLinks">
-      <a class="menu-back" href="https://www.inthestands.co/overview/chicago-cubs">‹ Back to the Cubs guide</a>
-      <a href="https://www.inthestands.co/">Home</a>
-      <a href="https://www.inthestands.co/overview/chicago-cubs" aria-current="page">MLB</a>
-      <a href="https://www.inthestands.co/">MLS</a>
-      <a href="https://www.inthestands.co/discover">Blog</a>
-      <a href="https://www.inthestands.co/about-in-the-stands">About Us</a>
-      <a href="https://inthestands.shop/">Shop</a>
-    </div>
-  </nav>
-</header>
-
-<button class="sound-fab" id="soundFab" type="button" aria-pressed="false">Sound off</button>
+  <div class="db-right"><button class="db-sound" id="soundFab" type="button" aria-pressed="false">Sound off</button></div>
+</div>
 
 <nav class="year-nav" id="yearNav" aria-label="Timeline years"><ol></ol></nav>
 
@@ -89,11 +78,11 @@
   </div>
 </section>
 
-<main id="timeline">
+<main id="timeline" class="track">
+<div class="stage" id="stage">
 
   <!-- 1914: paper + artifacts -->
   <section class="slide paper" id="y1914" data-year="1914" data-month="March" data-tone="light">
-    <div class="stamp"><span class="stamp-month">March</span><span class="stamp-year" aria-label="1914"><b>1</b><b>9</b><b>1</b><b>4</b></span></div>
     <div class="split">
       <div>
         <h3>Weeghman Park <span class="small">rises</span></h3>
@@ -121,18 +110,15 @@
           </g>
         </svg>
         <figure class="print">
-          <img src="{{IMG}}opening-day-1914.jpg" alt="Panorama of a packed opening day crowd at the new Federal League park, April 23, 1914" loading="lazy">
+          <img src="{{IMG}}opening-day-1914.jpg" alt="Panorama of a packed opening day crowd at the new Federal League park, April 23, 1914">
           <figcaption>Opening day, April 23, 1914. Chicago 9, Kansas City 1. Kaufmann, Weimer &amp; Fabry Co. / Library of Congress</figcaption>
         </figure>
       </div>
     </div>
   </section>
 
-  <div class="gap" aria-hidden="true">2 years later</div>
-
   <!-- 1916: photo left / text right -->
   <section class="slide paper" id="y1916" data-year="1916" data-month="April" data-tone="light">
-    <div class="stamp"><span class="stamp-month">April</span><span class="stamp-year" aria-label="1916"><b>1</b><b>9</b><b>1</b><b>6</b></span></div>
     <div class="split">
       <figure class="ph">
         <div class="ph-img"><span>Photo: Cubs at Weeghman Park, 1916</span></div>
@@ -146,10 +132,7 @@
     </div>
   </section>
 
-  <div class="gap" aria-hidden="true">10 years later</div>
-
   <section class="slide paper" id="y1926" data-year="1926" data-month="Season" data-tone="light">
-    <div class="stamp"><span class="stamp-month">Season</span><span class="stamp-year" aria-label="1926"><b>1</b><b>9</b><b>2</b><b>6</b></span></div>
     <div class="split">
       <div>
         <h3>It becomes <span class="small">Wrigley</span> Field</h3>
@@ -162,15 +145,12 @@
       </ol>
     </div>
     <figure class="wide-photo">
-      <img src="{{IMG}}wrigley-1929.jpg" alt="1929 composite of Wrigley Field with portraits of Cubs players and executives, William Wrigley Jr. at top center" loading="lazy">
+      <img src="{{IMG}}wrigley-1929.jpg" alt="1929 composite of Wrigley Field with portraits of Cubs players and executives, William Wrigley Jr. at top center">
       <figcaption>"Wrigley Field, home of the Chicago Cubs, 1929." William Wrigley Jr. is at top center. Kaufmann &amp; Fabry Co. / Library of Congress</figcaption>
     </figure>
   </section>
 
-  <div class="gap" aria-hidden="true">6 years later</div>
-
   <section class="slide dark" id="y1932" data-year="1932" data-month="October" data-tone="dark">
-    <div class="stamp"><span class="stamp-month">October</span><span class="stamp-year" aria-label="1932"><b>1</b><b>9</b><b>3</b><b>2</b></span></div>
     <div class="center-copy">
       <h3><span class="small">The</span> Called Shot</h3>
       <p class="lede">World Series, Game 3, fifth inning. Babe Ruth has two strikes on him, gestures toward center field, and hits the next pitch there.</p>
@@ -180,17 +160,14 @@
       <div class="card"><p class="eyebrow">The film</p><p>Grainy footage shows a gesture, but nobody agrees if he was pointing at the bleachers, the Cubs dugout, or pitcher Charlie Root.</p></div>
     </div>
     <figure class="wide-photo">
-      <img src="{{IMG}}crowd-1929.jpg" alt="Panorama of a packed Cubs Park crowd in 1929, with fans standing in the outfield" loading="lazy">
+      <img src="{{IMG}}crowd-1929.jpg" alt="Panorama of a packed Cubs Park crowd in 1929, with fans standing in the outfield">
       <figcaption>The park three years earlier: "Crowd at Cubs Park, July 27, 1929." Kaufmann &amp; Fabry Co. / Library of Congress</figcaption>
     </figure>
     <p class="funfact"><span class="tag">Fun fact</span><span>Charlie Root, who threw the pitch, is in the 1929 team composite on the slide before this one.</span></p>
   </section>
 
-  <div class="gap" aria-hidden="true">5 years later</div>
-
   <!-- 1937: then / now -->
   <section class="slide sepia" id="y1937" data-year="1937" data-month="September" data-tone="dark">
-    <div class="stamp"><span class="stamp-month">September</span><span class="stamp-year" aria-label="1937"><b>1</b><b>9</b><b>3</b><b>7</b></span></div>
     <div class="center-copy">
       <h3><span class="small">The</span> ivy goes up</h3>
       <p class="lede">Bill Veeck plants Boston ivy and bittersweet along the new outfield wall. The center-field scoreboard goes up the same year, and it's still turned by hand.</p>
@@ -204,10 +181,7 @@
     </div>
   </section>
 
-  <div class="gap" aria-hidden="true">1 year later</div>
-
   <section class="slide dusk" id="y1938" data-year="1938" data-month="September" data-tone="dark">
-    <div class="stamp"><span class="stamp-month">September</span><span class="stamp-year" aria-label="1938"><b>1</b><b>9</b><b>3</b><b>8</b></span></div>
     <div class="center-copy">
       <h3>Homer <span class="small">in the</span> Gloamin'</h3>
       <p class="lede">With darkness falling and the game about to be called, player-manager Gabby Hartnett homers in the bottom of the ninth to beat the Pirates. The Cubs take first place and go on to win the pennant.</p>
@@ -215,10 +189,7 @@
     </div>
   </section>
 
-  <div class="gap" aria-hidden="true">7 years later</div>
-
   <section class="slide paper" id="y1945" data-year="1945" data-month="October" data-tone="light">
-    <div class="stamp"><span class="stamp-month">October</span><span class="stamp-year" aria-label="1945"><b>1</b><b>9</b><b>4</b><b>5</b></span></div>
     <div class="stat-split">
       <div>
         <h3><span class="small">The</span> curse <span class="small">(allegedly)</span></h3>
@@ -231,10 +202,7 @@
     </div>
   </section>
 
-  <div class="gap" aria-hidden="true">25 years later</div>
-
   <section class="slide paper" id="y1970" data-year="1970" data-month="May" data-tone="light">
-    <div class="stamp"><span class="stamp-month">May</span><span class="stamp-year" aria-label="1970"><b>1</b><b>9</b><b>7</b><b>0</b></span></div>
     <div class="split">
       <div class="circle num-circle"><span>500</span></div>
       <div>
@@ -246,10 +214,8 @@
     </div>
   </section>
 
-  <div class="gap" aria-hidden="true">12 years later</div>
-
   <!-- Harry moment -->
-  <section class="moment" id="moment" data-year="1982" data-month="April" data-tone="dark" aria-label="Seventh-inning stretch moment">
+  <section class="slide moment" data-weight="3" id="moment" data-year="1982" data-month="April" data-tone="dark" aria-label="Seventh-inning stretch moment">
     <div class="moment-sticky">
       <div class="moment-frame" aria-hidden="true"></div>
       <div class="phrase"><small>Alright!</small>Let me hear ya!</div>
@@ -262,7 +228,6 @@
 
   <!-- 1982: circle media -->
   <section class="slide paper" id="y1982" data-year="1982" data-month="April" data-tone="light">
-    <div class="stamp"><span class="stamp-month">April</span><span class="stamp-year" aria-label="1982"><b>1</b><b>9</b><b>8</b><b>2</b></span></div>
     <div class="split">
       <div class="circle">
         <svg viewBox="0 0 300 120" aria-hidden="true">
@@ -284,11 +249,8 @@
     </div>
   </section>
 
-  <div class="gap" aria-hidden="true">6 years later</div>
-
   <!-- 1988: dark stat split -->
   <section class="slide dark" id="y1988" data-year="1988" data-month="August" data-tone="dark">
-    <div class="stamp"><span class="stamp-month">August</span><span class="stamp-year" aria-label="1988"><b>1</b><b>9</b><b>8</b><b>8</b></span></div>
     <div class="stat-split">
       <div>
         <div class="bignum">8.8.88</div>
@@ -306,10 +268,7 @@
     </div>
   </section>
 
-  <div class="gap" aria-hidden="true">26 years later</div>
-
   <section class="slide ivywall" id="y2014" data-year="2014" data-month="April" data-tone="dark">
-    <div class="stamp"><span class="stamp-month">April</span><span class="stamp-year" aria-label="2014"><b>2</b><b>0</b><b>1</b><b>4</b></span></div>
     <div class="center-copy">
       <div class="bignum">100</div>
       <h3>Happy birthday, Wrigley</h3>
@@ -317,10 +276,8 @@
     </div>
   </section>
 
-  <div class="gap" aria-hidden="true">2 years later</div>
-
   <!-- 2016 countdown -->
-  <section class="count" id="count" data-year="2016" data-month="November" data-tone="dark" aria-label="Countdown to the 2016 World Series title">
+  <section class="slide count" data-weight="2.4" id="count" data-year="2016" data-month="November" data-tone="dark" aria-label="Countdown to the 2016 World Series title">
     <div class="count-sticky">
       <canvas id="confetti"></canvas>
       <p class="eyebrow">November 2, 2016</p>
@@ -346,6 +303,7 @@
     </div>
   </section>
 
+</div>
 </main>
 
 <!-- FIRST GAME -->

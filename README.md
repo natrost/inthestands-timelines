@@ -19,11 +19,12 @@ Edit `src/`, run `python3 wrigley-field/build.py`, commit, then tag a version (f
 
 ### In Webflow
 
+The page has the site's Mega Menu, then a div with ID `its-wrigley`, then the Footer.
+The date bar docks under the nav (`.nav_wrapper`; override with `data-nav` on the div).
 Page footer custom code:
 
 ```html
-<div id="its-wrigley"></div>
-<script src="https://cdn.jsdelivr.net/gh/natrost/inthestands-timelines@v0.1.1/wrigley-field/dist/wrigley.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/natrost/inthestands-timelines@v0.2.0/wrigley-field/dist/wrigley.js"></script>
 ```
 
 Bump the tag in that URL to ship a new version. jsDelivr caches tagged files permanently, so always use a new tag rather than re-pointing an old one.
