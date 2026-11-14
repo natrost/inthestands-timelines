@@ -56,12 +56,12 @@
   function drawIntro(p) {
     const copyOut = clamp((p - .12) / .2);              // copy leaves first
     const x = clamp((p - .3) / .3);                     // then the photos crossfade
-    const label = clamp((p - .62) / .14);
+    const label = clamp((p - .62) / .12);
     introCopy.style.opacity = (1 - copyOut).toFixed(3);
     introCopy.style.transform = reduce ? '' : `translateY(${(-copyOut * 40).toFixed(1)}px)`;
     introNow.style.opacity = (1 - x).toFixed(3);
-    introNow.style.transform = reduce ? '' : `scale(${(1.02 + p * .06).toFixed(4)})`;
-    introThen.style.transform = `scale(${(reduce ? 1.4 : 1.5 - .1 * clamp((p - .3) / .7)).toFixed(4)})`;
+    const z = `scale(${(reduce ? 1.12 : 1.04 + .12 * p).toFixed(4)})`;
+    introNow.style.transform = z; introThen.style.transform = z;
     introShade.style.opacity = (1 - x * .6).toFixed(3);
     thenLabel.style.opacity = label.toFixed(3);
     creditNow.style.opacity = (1 - x).toFixed(3);
@@ -134,7 +134,7 @@
 
   // wrap each normal slide's content so it can animate in and scale to fit
   slides.forEach(sl => {
-    if (sl.classList.contains('moment') || sl.classList.contains('count')) return;
+    if (sl.matches('.moment, .count, .intro-slide')) return;
     const inner = document.createElement('div'); inner.className = 'slide-inner';
     [...sl.childNodes].filter(n => !(n.classList && n.classList.contains('bg-layer'))).forEach(n => inner.appendChild(n));
     const shade = sl.querySelector(':scope > .bg-shade');
@@ -171,7 +171,7 @@
 
   /* ---------- Year rail + date menu ---------- */
   const navOl = document.querySelector('#yearNav ol'), menu = document.getElementById('yearMenu'), dateBtn = document.getElementById('dateBtn');
-  const years = [...new Set(slides.map(m => m.dataset.year))];
+  const years = [...new Set(slides.map(m => m.dataset.year).filter(Boolean))];
   const links = {}, mlinks = {};
   years.forEach(y => {
     const i = slides.findIndex(m => m.dataset.year === y);
@@ -226,10 +226,11 @@
     const sl = slides[i]; sl.classList.add('on');
     // only the event on screen plays video
     slides.forEach(x => x.querySelectorAll('video').forEach(v => { if (x === sl && !reduce) { const p = v.play(); if (p) p.catch(() => {}); } else v.pause(); }));
-    if (prev) showGap(+prev.dataset.year, +sl.dataset.year);
+    if (prev && prev.dataset.year && sl.dataset.year) showGap(+prev.dataset.year, +sl.dataset.year);
     active = i;
     const y = sl.dataset.year;
     document.body.dataset.tone = sl.dataset.tone || 'dark';
+    if (!y) return;
     setHeaderStamp(sl.dataset.month, y);
     if (y !== activeYear) {
       [links, mlinks].forEach(L => { if (L[activeYear]) { L[activeYear].classList.remove('active'); L[activeYear].removeAttribute('aria-current'); } });
@@ -241,7 +242,6 @@
   function frame() {
     queued = false;
     const ir = intro.getBoundingClientRect();
-    if (ir.bottom > 0) drawIntro(prog(intro));
 
     // date bar sits under the site nav while it's on screen, then at the top
     const navB = siteNav ? Math.max(0, siteNav.getBoundingClientRect().bottom) : 0;
@@ -250,11 +250,13 @@
 
     const tr = track.getBoundingClientRect();
     const inStage = tr.top <= 1 && tr.bottom >= vh * .5;
-    document.body.classList.toggle('nav-on', tr.top < vh * .35 && tr.bottom > vh * .5);
+
     const sY = clamp(-tr.top, 0, total - 1);
     let i = 0; while (i < starts.length - 1 && sY >= starts[i + 1]) i++;
     setActive(i);
     const local = clamp((sY - starts[i]) / spans[i]);
+    document.body.classList.toggle('nav-on', !!slides[i].dataset.year && tr.top < vh * .35 && tr.bottom > vh * .5);
+    drawIntro(slides[i] === intro ? local : (slides.indexOf(intro) < i ? 1 : 0));
 
     // Harry: the count runs while his slide is up
     const mp = slides[i] === moment ? local : (slides.indexOf(moment) < i ? 1 : 0), n = phrases.length;

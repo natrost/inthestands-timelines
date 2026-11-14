@@ -401,4 +401,11 @@ footer ul{margin:0;padding-left:18px;display:grid;gap:6px}
   .intro .then-label{white-space:normal;width:90%}
   .intro-credit{left:16px;text-align:right;font-size:10px}
 }
-.intro-then{transform-origin:47% 82%;transform:scale(1.5)}
+
+/* Intro lives on the pinned stage: it crossfades into 1914 like any other event */
+.stage>.slide.intro-slide{padding:0}
+.intro-slide .intro-sticky{position:absolute;inset:0;height:auto;overflow:hidden}
+.intro-img{object-position:44% 62%;transform-origin:44% 62%;transform:scale(1.04)}
+.intro-now{object-position:44% 62%}
+.intro-then{object-position:44% 62%}
+@media (max-width:760px){.intro-now,.intro-then,.intro-img{object-position:42% 62%;transform-origin:42% 62%}}
