@@ -24,7 +24,7 @@ The date bar docks under the nav (`.nav_wrapper`; override with `data-nav` on th
 Page footer custom code:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/natrost/inthestands-timelines@v0.2.1/wrigley-field/dist/wrigley.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/natrost/inthestands-timelines@v0.2.2/wrigley-field/dist/wrigley.js"></script>
 ```
 
 Bump the tag in that URL to ship a new version. jsDelivr caches tagged files permanently, so always use a new tag rather than re-pointing an old one.
@@ -35,4 +35,6 @@ Bump the tag in that URL to ship a new version. jsDelivr caches tagged files per
 - "Wrigley Field, home of the Chicago Cubs, 1929": Kaufmann & Fabry Co., Library of Congress (item 2007663725)
 - "Crowd at Cubs Park, July 27, 1929": Kaufmann & Fabry Co., Library of Congress (item 2007663541)
 
-All three were published before 1931 and are public domain in the US. The Library of Congress lists no known restrictions.
+- Wrigleyville after the 2016 World Series (video): Brandon Zeman, CC BY-SA 2.0, via Wikimedia Commons. Shortened copies made from Wikimedia's own 480p/360p versions.
+
+The three photos were published before 1931 and are public domain in the US. The Library of Congress lists no known restrictions.

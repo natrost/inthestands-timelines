@@ -265,6 +265,8 @@
     clearTimeout(fadeTimer);
     fadeTimer = setTimeout(() => { slides.forEach(sl => sl.classList.remove('prev')); }, 900);
     const sl = slides[i]; sl.classList.add('on');
+    // only the event on screen plays video
+    slides.forEach(x => x.querySelectorAll('video').forEach(v => { if (x === sl && !reduce) { const p = v.play(); if (p) p.catch(() => {}); } else v.pause(); }));
     if (prev) showGap(+prev.dataset.year, +sl.dataset.year);
     active = i;
     const y = sl.dataset.year;
