@@ -24,7 +24,7 @@ The date bar docks under the nav (`.nav_wrapper`; override with `data-nav` on th
 Page footer custom code:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/natrost/inthestands-timelines@v0.2.4/wrigley-field/dist/wrigley.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/natrost/inthestands-timelines@v0.2.5/wrigley-field/dist/wrigley.js"></script>
 ```
 
 Bump the tag in that URL to ship a new version. jsDelivr caches tagged files permanently, so always use a new tag rather than re-pointing an old one.

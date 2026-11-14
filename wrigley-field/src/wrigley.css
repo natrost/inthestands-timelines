@@ -350,18 +350,28 @@ footer ul{margin:0;padding-left:18px;display:grid;gap:6px}
   .stage>.slide,.stage>.slide.on,.slide-inner>*{transition:none}
 }
 
-/* 2016 street video */
-.clip-video{margin:0}
-.clip-video video{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#111;box-shadow:0 18px 36px rgba(0,0,0,.3);transform:rotate(-1deg)}
-.clip-video figcaption{font-family:var(--ui);font-size:12px;color:var(--muted);margin-top:12px}
-.clip-video figcaption a{color:inherit}
-
 /* 1914: construction print sits behind the opening-day panorama */
 .print-build{max-width:440px;transform:rotate(-2.5deg) translate(-6%,0);filter:contrast(1.05)}
 .print-build img{width:100%}
 @media (max-width:760px){.print-build{transform:rotate(-1.5deg)}}
 
-/* 2016 zoom: video sits above the text while it shrinks into place */
-.clip-video{position:relative;z-index:3;transform-origin:50% 50%;will-change:transform}
-.clip-video.big video{transform:none;box-shadow:0 30px 80px rgba(0,0,0,.45)}
-.clip-video video{transition:transform .4s ease}
+/* 2016: full-screen video with the text over it */
+.slide.videobg{background:#0b0b0b;color:#fff;justify-content:center}
+.bg-layer{position:absolute;inset:0;margin:0}
+.bg-video{width:100%;height:100%;object-fit:cover}
+.bg-shade{background:linear-gradient(90deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.45) 45%,rgba(0,0,0,.1) 80%),linear-gradient(0deg,rgba(0,0,0,.45),transparent 30%)}
+.videobg .slide-inner{position:relative;z-index:1;align-items:flex-start}
+.videobg .slide-inner>*{opacity:1;transform:none;transition:none}
+.vb-copy{max-width:640px;display:flex;flex-direction:column;gap:6px;text-shadow:0 2px 18px rgba(0,0,0,.55)}
+.vb-copy>*{opacity:0}
+.vb-copy .lede{color:#fff}
+.vb-copy .funfact .tag{text-shadow:none}
+.bg-credit{inset:auto 16px 12px auto;z-index:2;font-family:var(--ui);font-size:11px;letter-spacing:.04em;color:rgba(255,255,255,.75);text-shadow:0 1px 6px rgba(0,0,0,.8)}
+.bg-credit a{color:inherit}
+@media (max-width:760px){
+  .bg-shade{background:linear-gradient(0deg,rgba(0,0,0,.8) 0%,rgba(0,0,0,.55) 55%,rgba(0,0,0,.25) 100%)}
+  .videobg .slide-inner{justify-content:flex-end}
+  .bg-credit{font-size:10px;left:16px;text-align:right}
+}
+
+.firstgame .btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink)}
