@@ -39,7 +39,6 @@
     return c.toDataURL('image/jpeg', .86);
   }
   const ivyWall = `url(${wall(1600, 1000, .97, .74, 7)})`;
-  document.getElementById('titlecard').style.backgroundImage = ivyWall;
   document.getElementById('y2014').style.backgroundImage = ivyWall;
   document.getElementById('wallThen').style.backgroundImage = `url(${wall(1400, 700, 0, 1, 3)})`;
   document.getElementById('wallNow').style.backgroundImage = `url(${wall(1400, 700, .98, .9, 3)})`;
@@ -48,66 +47,25 @@
   const compare = document.getElementById('compare');
   document.getElementById('compareRange').addEventListener('input', e => compare.style.setProperty('--pos', e.target.value + '%'));
 
-  /* ---------- Aerial roofs + street grid ---------- */
-  (() => {
-    const roofs = document.getElementById('roofs'), grid = document.getElementById('grid'), r = rng(11);
-    let html = '';
-    for (let i = 0; i < 1400; i++) {
-      const x = -700 + r() * 1850, y = -700 + r() * 2400, w = 14 + r() * 34, h = 12 + r() * 30, l = 52 + r() * 22;
-      html += `<rect x="${x.toFixed(0)}" y="${y.toFixed(0)}" width="${w.toFixed(0)}" height="${h.toFixed(0)}" fill="hsl(${25 + r() * 20} ${8 + r() * 12}% ${l}%)"/>`;
-      if (r() < .06) html += `<circle cx="${(x + r() * 40).toFixed(0)}" cy="${(y + r() * 40).toFixed(0)}" r="${(8 + r() * 10).toFixed(0)}" fill="hsl(${95 + r() * 20} 30% ${30 + r() * 10}%)"/>`;
-    }
-    roofs.innerHTML = html;
-    let lines = '';
-    for (let x = -735; x < 1150; x += 115) lines += `<line x1="${x}" y1="-800" x2="${x}" y2="1800"/>`;
-    for (let y = -805; y < 1800; y += 80) lines += `<line x1="-800" y1="${y}" x2="1150" y2="${y}"/>`;
-    grid.innerHTML = lines;
-  })();
-
-  /* ---------- Clouds ---------- */
-  const cv = document.getElementById('clouds'), cx = cv.getContext('2d');
-  function sprite(seed) {
-    const r = rng(seed), W = 640, H = 360, c = document.createElement('canvas'); c.width = W; c.height = H;
-    const g = c.getContext('2d');
-    for (let i = 0; i < 28; i++) {
-      const x = W * (.16 + r() * .68), rad = 40 + r() * 95;
-      const y = H * (.42 + r() * .26) - (Math.abs(x - W / 2) < W * .2 ? r() * H * .16 : 0);
-      const gr = g.createRadialGradient(x, y - rad * .25, 0, x, y, rad);
-      gr.addColorStop(0, 'rgba(255,255,255,.96)'); gr.addColorStop(.6, 'rgba(244,248,252,.72)'); gr.addColorStop(1, 'rgba(220,230,240,0)');
-      g.fillStyle = gr; g.beginPath(); g.arc(x, y, rad, 0, 7); g.fill();
-    }
-    return c;
-  }
-  const sprites = [1, 2, 3, 4, 5].map(sprite);
-  const cr = rng(42);
-  const clouds = Array.from({ length: 30 }, (_, i) => { const x = cr(); return { x, y: cr() * 1.1 - .05, s: .9 + cr() * 1.4, d: .5 + cr() * .9, side: x < .5 ? -1 : 1, sp: sprites[i % 5] }; }).sort((a, b) => a.d - b.d);
   function sizeCanvas(c) { const dpr = Math.min(2, devicePixelRatio || 1); c.width = c.clientWidth * dpr; c.height = c.clientHeight * dpr; c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0); }
-  function drawClouds(p) {
-    const W = cv.clientWidth, H = cv.clientHeight; cx.clearRect(0, 0, W, H);
-    const haze = clamp(1 - p * 2.6);
-    if (haze > 0) { const sk = cx.createLinearGradient(0, 0, 0, H); sk.addColorStop(0, `rgba(150,192,222,${haze})`); sk.addColorStop(1, `rgba(228,237,245,${haze})`); cx.fillStyle = sk; cx.fillRect(0, 0, W, H); }
-    const base = Math.max(W, H) / 900;
-    for (const c of clouds) {
-      const a = clamp(1 - Math.max(0, p - .12) * 1.9 * c.d); if (a <= 0) continue;
-      const grow = 1 + p * 2.4 * c.d, w = c.sp.width * c.s * base * grow * .75, h = c.sp.height * c.s * base * grow * .75;
-      const x = c.x * W + c.side * p * W * 1.3 * c.d - w / 2, y = c.y * H + (c.y - .5) * p * H * .8 - h / 2;
-      cx.globalAlpha = a; cx.drawImage(c.sp, x, y, w, h);
-    }
-    cx.globalAlpha = 1;
-  }
 
-  const ag = document.getElementById('aerialG'), aw = document.getElementById('aerialWrap');
-  const thenPhoto = document.getElementById('thenPhoto'), introCopy = document.getElementById('introCopy'), introNote = document.getElementById('introNote'), thenLabel = document.getElementById('thenLabel');
-  function drawAerial(p) {
-    const s = 1 + p * 1.8, rot = -30 + 30 * clamp(p / .85);
-    ag.setAttribute('transform', `translate(530 495) rotate(${rot.toFixed(2)}) scale(${s.toFixed(3)}) translate(-530 -495)`);
-    const sep = clamp((p - .78) / .18);
-    aw.style.filter = sep ? `sepia(${sep}) contrast(${1 + sep * .12}) brightness(${1 - sep * .14})` : '';
-    thenLabel.style.opacity = sep;
-    thenPhoto.style.opacity = clamp((p - .86) / .12);
-    introNote.style.opacity = clamp((p - .3) / .1) * (1 - sep);
-    introCopy.style.opacity = clamp(1 - p * 4);
-    introCopy.style.transform = `translateY(${(-p * 140).toFixed(1)}px)`;
+  /* ---------- Intro: right field today, fading to Clark & Addison in 1914 ---------- */
+  const introNow = document.getElementById('introNow'), introThen = document.getElementById('introThen');
+  const introCopy = document.getElementById('introCopy'), thenLabel = document.getElementById('thenLabel'), introShade = document.getElementById('introShade');
+  const creditNow = document.getElementById('creditNow'), creditThen = document.getElementById('creditThen');
+  function drawIntro(p) {
+    const copyOut = clamp((p - .12) / .2);              // copy leaves first
+    const x = clamp((p - .3) / .3);                     // then the photos crossfade
+    const label = clamp((p - .62) / .14);
+    introCopy.style.opacity = (1 - copyOut).toFixed(3);
+    introCopy.style.transform = reduce ? '' : `translateY(${(-copyOut * 40).toFixed(1)}px)`;
+    introNow.style.opacity = (1 - x).toFixed(3);
+    introNow.style.transform = reduce ? '' : `scale(${(1.02 + p * .06).toFixed(4)})`;
+    introThen.style.transform = `scale(${(reduce ? 1.4 : 1.5 - .1 * clamp((p - .3) / .7)).toFixed(4)})`;
+    introShade.style.opacity = (1 - x * .6).toFixed(3);
+    thenLabel.style.opacity = label.toFixed(3);
+    creditNow.style.opacity = (1 - x).toFixed(3);
+    creditThen.style.opacity = x.toFixed(3);
   }
 
   /* ---------- Sound (organ synth) ---------- */
@@ -283,7 +241,7 @@
   function frame() {
     queued = false;
     const ir = intro.getBoundingClientRect();
-    if (ir.bottom > 0) { let p = prog(intro); if (reduce) p = p > .35 ? 1 : 0; drawClouds(p); drawAerial(p); }
+    if (ir.bottom > 0) drawIntro(prog(intro));
 
     // date bar sits under the site nav while it's on screen, then at the top
     const navB = siteNav ? Math.max(0, siteNav.getBoundingClientRect().bottom) : 0;
@@ -338,10 +296,10 @@
   }
   const req = () => { if (!queued) { queued = true; requestAnimationFrame(frame); } };
   addEventListener('scroll', req, { passive: true });
-  addEventListener('resize', () => { sizeCanvas(cv); fitMonth(); layout(); req(); });
+  addEventListener('resize', () => { fitMonth(); layout(); req(); });
   if (realDoc.fonts && realDoc.fonts.ready) realDoc.fonts.ready.then(() => { layout(); req(); });
   addEventListener('load', () => { layout(); req(); });
-  sizeCanvas(cv); layout(); frame();
+  layout(); frame();
 
   /* ---------- First game ---------- */
   const NOW = new Date().getFullYear(), SPAN = NOW - 1914;

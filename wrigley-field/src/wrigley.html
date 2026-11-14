@@ -17,64 +17,21 @@
 <nav class="year-nav" id="yearNav" aria-label="Timeline years"><ol></ol></nav>
 
 <!-- INTRO -->
-<section class="intro" id="intro" aria-label="Intro: descending through the clouds to Wrigley Field">
+<section class="intro" id="intro" aria-label="Intro: Wrigley Field today, then Clark and Addison in 1914">
   <div class="intro-sticky">
-    <div class="aerial-wrap" id="aerialWrap">
-      <svg id="aerial" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <g id="aerialG">
-          <rect x="-800" y="-800" width="2600" height="2600" fill="#b7b0a0"/>
-          <g id="roofs"></g>
-          <rect x="1150" y="-800" width="700" height="2600" fill="#5f8fae"/>
-          <g stroke="#e9e5db" stroke-linecap="square">
-            <g id="grid" stroke-width="9"></g>
-            <line x1="-800" y1="655" x2="1800" y2="655" stroke-width="20"/>
-            <line x1="695" y1="-800" x2="695" y2="1800" stroke-width="20"/>
-            <line x1="-800" y1="315" x2="1800" y2="315" stroke-width="16"/>
-            <line x1="871" y1="-800" x2="-52" y2="1800" stroke-width="22"/>
-          </g>
-          <!-- ballpark -->
-          <polygon points="470,330 680,330 680,640 360,640" fill="#77736b"/>
-          <path d="M398,618 L424,372 Q560,330 662,404 L662,600 Z" fill="#8c877b"/>
-          <path d="M398,618 L428,392 Q555,355 645,415 L645,598 Z" fill="#4f8a3b"/>
-          <path d="M428,392 Q555,355 645,415" fill="none" stroke="#2f5a2a" stroke-width="5"/>
-          <rect x="545" y="342" width="44" height="12" fill="#1f3d2e" stroke="#fff" stroke-width="1.5"/>
-          <path d="M400,612 L494,604 A94,94 0 0 0 410,520 Z" fill="#b5784a"/>
-          <polygon points="412,600 462,596 466,548 416,552" fill="#4f8a3b"/>
-          <circle cx="439" cy="574" r="5" fill="#b5784a"/>
-          <g fill="#fff"><rect x="398" y="609" width="5" height="5"/><rect x="460" y="593" width="5" height="5"/><rect x="463" y="545" width="5" height="5"/><rect x="413" y="549" width="5" height="5"/></g>
-          <g font-family="Barlow, Arial, sans-serif" font-weight="600" font-size="13" letter-spacing="3" fill="#fff" opacity=".85">
-            <text x="760" y="672">ADDISON ST</text>
-            <text x="760" y="331">WAVELAND AVE</text>
-            <text x="704" y="160" transform="rotate(90 704 160)">SHEFFIELD AVE</text>
-            <text x="250" y="860" transform="rotate(-70.4 250 860)">CLARK ST</text>
-          </g>
-        </g>
-      </svg>
-    </div>
-    <img class="then-photo" id="thenPhoto" src="{{IMG}}opening-day-1914.jpg" alt="Opening day at the Federal League park at Addison and Clark, April 23, 1914">
-    <canvas id="clouds"></canvas>
+    <img class="intro-img intro-then" id="introThen" src="{{IMG}}opening-day-1914-large.jpg" alt="Chicago's new Federal League park at Clark and Addison, packed for a game in 1914">
+    <img class="intro-img intro-now" id="introNow" src="{{IMG}}right-field-today.jpg" alt="Wrigley Field from the right-field bleachers at sunset, fans in the foreground and the grandstand lights on">
+    <div class="intro-shade" id="introShade" aria-hidden="true"></div>
     <div class="intro-copy" id="introCopy">
-      <p class="eyebrow">In the Stands presents</p>
-      <h1>Wrigley Field</h1>
-      <p class="years">1914 – Today</p>
-      <div class="cue"><span>Scroll to descend</span><span class="diamond" aria-hidden="true"></span></div>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="https://www.inthestands.co/">MLB</a><span aria-hidden="true">›</span><a href="https://www.inthestands.co/overview/chicago-cubs">Chicago Cubs · Wrigley Field</a><span aria-hidden="true">›</span><span aria-current="page">History</span></nav>
+      <h1><span class="small">The</span> history <span class="small">of</span> Wrigley Field</h1>
+      <p class="intro-sub">Ivy, lights, a goat, a called shot, and 108 years of waiting. Twelve moments from the corner of Clark and Addison.</p>
+      <button class="btn ghost-light" id="soundCta" type="button">Turn on sound for the seventh-inning stretch</button>
+      <div class="cue"><span>Scroll to go back to 1914</span><span class="diamond" aria-hidden="true"></span></div>
     </div>
-    <p class="intro-note" id="introNote">Placeholder aerial. The final version uses a Google Earth Studio camera move here (credit: Google Earth).</p>
-    <div class="then-label" id="thenLabel"><strong>Clark &amp; Addison, 1914</strong><span>Opening day · Library of Congress</span></div>
-  </div>
-</section>
-
-<!-- TITLE CARD -->
-<section class="titlecard" id="titlecard">
-  <div class="titlecard-inner">
-    <nav class="crumbs" aria-label="Breadcrumb"><a href="https://www.inthestands.co/">MLB</a><span aria-hidden="true">›</span><a href="https://www.inthestands.co/overview/chicago-cubs">Chicago Cubs · Wrigley Field</a><span aria-hidden="true">›</span><span aria-current="page">History</span></nav>
-    <div class="marquee"><small>In the Stands presents</small><span>The Friendly Confines</span></div>
-    <h2><span class="small">The</span> mostly accurate, completely unofficial history <span class="small">of</span> Wrigley Field</h2>
-    <p class="sub">Ivy, lights, a goat, a called shot, and 108 years of waiting.</p>
-    <div class="title-actions">
-      <button class="btn" id="soundCta" type="button">Turn on sound for the seventh-inning stretch</button>
-    </div>
-    <a class="start" href="#y1914">Start the history lesson<span class="diamond" aria-hidden="true"></span></a>
+    <div class="then-label" id="thenLabel"><strong>Clark &amp; Addison, 1914</strong><span>Chicago's new Federal League park</span></div>
+    <p class="intro-credit" id="creditNow">Photo: Jon Gudorf Photography, <a href="https://commons.wikimedia.org/wiki/File:Wrigley_Field_bleachers_in_last_light._(21978614586).jpg" target="_blank" rel="noopener">CC BY-SA 2.0</a>, via Wikimedia Commons</p>
+    <p class="intro-credit" id="creditThen">Max Rigot Selling Co., 1914. Public domain, via Wikimedia Commons</p>
   </div>
 </section>
 
@@ -317,6 +274,8 @@
     <h4>Photo and video credits</h4>
     <ul>
       <li>Weeghman Park under construction, 1914: Chicago Daily News, Chicago History Museum, via Library of Congress. Public domain.</li>
+      <li>Wrigley Field from the right-field bleachers: Jon Gudorf Photography, <a href="https://commons.wikimedia.org/wiki/File:Wrigley_Field_bleachers_in_last_light._(21978614586).jpg" target="_blank" rel="noopener">CC BY-SA 2.0</a>, via Wikimedia Commons.</li>
+      <li>"Chicago's New Federal League Park," 1914: Max Rigot Selling Co. Public domain, via Wikimedia Commons.</li>
       <li>Opening day, April 23, 1914: Kaufmann, Weimer &amp; Fabry Co., Library of Congress. Public domain.</li>
       <li>"Wrigley Field, home of the Chicago Cubs, 1929" and "Crowd at Cubs Park, July 27, 1929": Kaufmann &amp; Fabry Co., Library of Congress. Public domain.</li>
       <li>Wrigleyville after the 2016 World Series: Brandon Zeman, <a href="https://commons.wikimedia.org/wiki/File:Scenes_from_Wrigleyville_after_the_Cubs_won_the_2016_World_Series_(3).webm" target="_blank" rel="noopener">CC BY-SA 2.0</a>, via Wikimedia Commons.</li>
