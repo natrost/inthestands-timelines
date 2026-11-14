@@ -1,0 +1,37 @@
+# In the Stands: ballpark timelines
+
+Interactive "history of" pages for [In the Stands](https://www.inthestands.co), one folder per ballpark.
+
+## Wrigley Field
+
+```
+wrigley-field/
+  src/wrigley.html   markup ({{IMG}} = image folder)
+  src/wrigley.css    styles (rendered in a shadow root, so site CSS can't clash)
+  src/app.js         scroll effects, year rail, sound, first-game widget
+  build.py           bundles src/ into dist/wrigley.js
+  dist/wrigley.js    the one file Webflow loads
+  img/               public-domain photos (Library of Congress)
+  index.html         standalone preview
+```
+
+Edit `src/`, run `python3 wrigley-field/build.py`, commit, then tag a version (for example `v0.2.0`).
+
+### In Webflow
+
+Page footer custom code:
+
+```html
+<div id="its-wrigley"></div>
+<script src="https://cdn.jsdelivr.net/gh/natrost/inthestands-timelines@v0.1.0/wrigley-field/dist/wrigley.js"></script>
+```
+
+Bump the tag in that URL to ship a new version. jsDelivr caches tagged files permanently, so always use a new tag rather than re-pointing an old one.
+
+### Photo credits
+
+- Opening day, April 23, 1914: Kaufmann, Weimer & Fabry Co., Library of Congress Prints & Photographs (item 2007663728)
+- "Wrigley Field, home of the Chicago Cubs, 1929": Kaufmann & Fabry Co., Library of Congress (item 2007663725)
+- "Crowd at Cubs Park, July 27, 1929": Kaufmann & Fabry Co., Library of Congress (item 2007663541)
+
+All three were published before 1931 and are public domain in the US. The Library of Congress lists no known restrictions.
