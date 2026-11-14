@@ -24,13 +24,14 @@ The date bar docks under the nav (`.nav_wrapper`; override with `data-nav` on th
 Page footer custom code:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/natrost/inthestands-timelines@v0.2.2/wrigley-field/dist/wrigley.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/natrost/inthestands-timelines@v0.2.3/wrigley-field/dist/wrigley.js"></script>
 ```
 
 Bump the tag in that URL to ship a new version. jsDelivr caches tagged files permanently, so always use a new tag rather than re-pointing an old one.
 
 ### Photo credits
 
+- Weeghman Park under construction, 1914: Chicago Daily News negatives collection, Chicago History Museum, via Library of Congress (SDN-059261). Public domain.
 - Opening day, April 23, 1914: Kaufmann, Weimer & Fabry Co., Library of Congress Prints & Photographs (item 2007663728)
 - "Wrigley Field, home of the Chicago Cubs, 1929": Kaufmann & Fabry Co., Library of Congress (item 2007663725)
 - "Crowd at Cubs Park, July 27, 1929": Kaufmann & Fabry Co., Library of Congress (item 2007663541)
