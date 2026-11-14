@@ -157,6 +157,13 @@
     })(start);
   }
 
+  /* On inthestands.co or its webflow.io staging copy, keep site links on the same domain */
+  if (/inthestands\.(co|webflow\.io)$/.test(location.hostname)) {
+    document.querySelectorAll('a[href^="https://www.inthestands.co"]').forEach(a => {
+      a.setAttribute('href', a.getAttribute('href').replace('https://www.inthestands.co', '') || '/');
+    });
+  }
+
   /* in-page links (the page lives in a shadow root, so the browser won't jump to #ids on its own) */
   document.body.addEventListener('click', e => {
     const a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;

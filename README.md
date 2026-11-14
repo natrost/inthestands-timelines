@@ -23,7 +23,7 @@ Page footer custom code:
 
 ```html
 <div id="its-wrigley"></div>
-<script src="https://cdn.jsdelivr.net/gh/natrost/inthestands-timelines@v0.1.0/wrigley-field/dist/wrigley.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/natrost/inthestands-timelines@v0.1.1/wrigley-field/dist/wrigley.js"></script>
 ```
 
 Bump the tag in that URL to ship a new version. jsDelivr caches tagged files permanently, so always use a new tag rather than re-pointing an old one.
