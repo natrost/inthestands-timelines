@@ -294,7 +294,7 @@ footer ul{margin:0;padding-left:18px;display:grid;gap:6px}
 :host{--bar:68px}
 .track{position:relative;background:var(--ink)}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--ink)}
-.stage>.slide{position:absolute;inset:0;min-height:0;margin:0;padding:calc(var(--navb,0px) + var(--bar) + 28px) 40px 36px 150px;display:flex;flex-direction:column;justify-content:center;align-items:stretch;overflow:hidden;
+.stage>.slide{position:absolute;inset:0;height:auto;min-height:0;margin:0;padding:calc(var(--navb,0px) + var(--bar) + 28px) 40px 36px 150px;display:flex;flex-direction:column;justify-content:center;align-items:stretch;overflow:hidden;
   opacity:0;visibility:hidden;z-index:0;transition:opacity .8s ease,visibility 0s linear .8s}
 .stage>.slide.on{opacity:1;visibility:visible;z-index:2;transition:opacity .8s ease}
 .stage>.slide.prev{opacity:1;visibility:visible;z-index:1;transition:none}
@@ -306,7 +306,7 @@ footer ul{margin:0;padding-left:18px;display:grid;gap:6px}
 .slide.on .slide-inner>:nth-child(4){transition-delay:.45s}
 .slide.prev .slide-inner>*{opacity:0;transition:opacity .25s ease}
 .stage>.slide.moment,.stage>.slide.count{padding:0}
-.moment .moment-sticky,.count .count-sticky{position:absolute;inset:0;height:auto;top:auto}
+.moment .moment-sticky,.count .count-sticky{position:absolute;inset:0;height:auto}
 .count .count-sticky{padding-top:calc(var(--navb,0px) + var(--bar))}
 
 /* ---------- Date bar under the site nav ---------- */
