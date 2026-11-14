@@ -360,3 +360,8 @@ footer ul{margin:0;padding-left:18px;display:grid;gap:6px}
 .print-build{max-width:440px;transform:rotate(-2.5deg) translate(-6%,0);filter:contrast(1.05)}
 .print-build img{width:100%}
 @media (max-width:760px){.print-build{transform:rotate(-1.5deg)}}
+
+/* 2016 zoom: video sits above the text while it shrinks into place */
+.clip-video{position:relative;z-index:3;transform-origin:50% 50%;will-change:transform}
+.clip-video.big video{transform:none;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.clip-video video{transition:transform .4s ease}

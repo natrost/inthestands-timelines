@@ -319,6 +319,32 @@
       if (won && !burst && i === ci) { burst = true; confetti(); chord(); }
       if (!won && num > 5) burst = false;
     }
+    zoomFrame(i, local);
+  }
+
+  /* 2016: the video starts big and centered, then shrinks into its spot as you scroll; the text follows */
+  const zoomSlide = stage.querySelector('[data-zoom]');
+  const zoomFig = zoomSlide && zoomSlide.querySelector('.clip-video');
+  const zoomText = zoomSlide ? [...zoomSlide.querySelectorAll('.split > div, .clip-video figcaption')] : [];
+  const ease = t => 1 - Math.pow(1 - t, 3);
+  function zoomFrame(i, local) {
+    if (!zoomFig) return;
+    const zi = slides.indexOf(zoomSlide);
+    const p = i === zi ? local : (i > zi ? 1 : 0);
+    const t = reduce ? 1 : ease(clamp(p / .55));
+    zoomFig.style.transform = 'none';
+    const r = zoomFig.getBoundingClientRect();
+    const inner = zoomSlide.querySelector('.slide-inner');
+    const fit = parseFloat(inner && inner.style.getPropertyValue('--fit')) || 1;
+    const sr = stage.getBoundingClientRect(), cs = getComputedStyle(zoomSlide);
+    const top = sr.top + parseFloat(cs.paddingTop), availH = sr.bottom - top - 24, availW = sr.width * .9;
+    const bigW = Math.min(availW, availH * 16 / 9), s = bigW / r.width;
+    const dx = (sr.left + sr.width / 2) - (r.left + r.width / 2), dy = (top + availH / 2) - (r.top + r.height / 2);
+    const k = 1 - t;
+    zoomFig.style.transform = k > 0.001 ? `translate(${(dx * k / fit).toFixed(1)}px, ${(dy * k / fit).toFixed(1)}px) scale(${(1 + (s - 1) * k).toFixed(4)})` : '';
+    zoomFig.classList.toggle('big', k > .02);
+    const o = clamp((p - .45) / .2).toFixed(3);
+    zoomText.forEach(el => { el.style.opacity = reduce ? '' : o; });
   }
   const req = () => { if (!queued) { queued = true; requestAnimationFrame(frame); } };
   addEventListener('scroll', req, { passive: true });
