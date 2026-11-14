@@ -283,15 +283,32 @@
     zoomFrame(i, local);
   }
 
-  /* 2016: the video plays full screen first, then the text fades in over it */
+  /* 2016: white screen with the video showing through a W; scrolling grows the W
+     until the video fills the screen, then the story text fades in */
   const lateSlide = stage.querySelector('[data-late-text]');
   const lateText = lateSlide ? [...lateSlide.querySelectorAll('.vb-copy > *')] : [];
+  const wMask = document.getElementById('wMask'), wCopy = document.getElementById('wCopy'), wShade = document.getElementById('wShade'), wCredit = document.getElementById('wCredit');
   function zoomFrame(i, local) {
     if (!lateSlide) return;
     const li = slides.indexOf(lateSlide);
     const p = i === li ? local : (i > li ? 1 : 0);
+    if (wMask) {
+      // grow from a point inside the W's left stroke so the video floods the screen
+      const vw = stage.clientWidth, vh2 = stage.clientHeight, kk = Math.max(vw, vh2) / 1000;
+      const ox = vw / 2 + (345 - 500) * .64 * kk, oy = vh2 / 2;
+      const t = reduce ? (p > .3 ? 1 : 0) : clamp((p - .12) / .45);
+      const sc = Math.pow(60, t * t);
+      wMask.style.transformOrigin = `${ox.toFixed(1)}px ${oy.toFixed(1)}px`;
+      wMask.style.transform = `scale(${sc.toFixed(3)})`;
+      wMask.style.opacity = (1 - clamp((t - .9) / .1)).toFixed(3);
+      if (i === li) document.body.dataset.tone = t < .85 ? 'light' : 'dark';   // year rail stays readable on white
+      wCopy.style.opacity = (1 - clamp((p - .06) / .1)).toFixed(3);
+      const full = clamp((p - .6) / .1);
+      wShade.style.opacity = full.toFixed(3);
+      wCredit.style.opacity = full.toFixed(3);
+    }
     lateText.forEach((el, k) => {
-      const o = reduce ? 1 : clamp((p - .22 - k * .06) / .14);
+      const o = reduce ? (p > .5 ? 1 : 0) : clamp((p - .66 - k * .05) / .1);
       el.style.opacity = o.toFixed(3);
       el.style.transform = reduce ? '' : `translateY(${((1 - o) * 24).toFixed(1)}px)`;
     });
